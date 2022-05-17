@@ -79,3 +79,22 @@ cd ..
 
 For any technical problems, feel free to reach out to me:
 Tali.we@moonactive.com
+
+# Tester setup
+- Tests will run on a c5.2xlarge machine
+- Configuration of the testers will be the same as presented here, 100 cards, 10K users
+- Each node applications will be limited to ~1 core, 512MB RAM
+- NodeJS version will be latest v16
+
+
+# Q&A
+- Q: I see in the README of the challenge that it says "For the scoring, we will run prebuilt testers and record the outcome". Is this prebuilt tester made of the same code as the tester in the challenge repository, or is there a different tester that will run? I ask because I see that the current tester raises 2 instances of the node service, one on port 4001 and one on port 4002, and raising multiple instances of the service might affect how I attack this challenge.
+- A: Yes the testers that we'll run will be the same that are provided here more additional logic like storing results and 1 minute time limit.
+
+- Q: I see one of the constraints is that the solution must be written in NodeJS only. Does this mean all code must be in pure Javascript? Is this disallowing writing for example writing a server in Go or Rust, and triggering its startup from the NodeJS index.js file? What about writing Lua scripts that run in Redis (https://redis.io/docs/manual/programmability/eval-intro/)?
+- A: Writing the solution must be in NodeJS as a runtime and Javascript as code, no compiling, precompiling, inlining code in any other language is allowed, or using any other runtimes like JustJS or others. LUA for making redis calls is acceptable.
+
+- Q: Is the cards.json file remains static
+- A: we will generate a new card.json before each run
+
+
