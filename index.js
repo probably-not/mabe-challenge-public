@@ -58,7 +58,7 @@ const router = async (req, res) => {
   if (userIndexes[req.url] === undefined) {
     userIndexes[req.url] = myStart;
   }
-  const idx = (userIndexes[req.url] += 1);
+  const idx = ++userIndexes[req.url]; //pre-increment is faster than plus equals
 
   if (idx <= myHalf) {
     res.end(allCards[idx - 1]);
