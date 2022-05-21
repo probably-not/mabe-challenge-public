@@ -54,7 +54,8 @@ const userIndexes = {};
 const router = async (req, res) => {
   res.statusCode = 200;
 
-  if (!userIndexes[req.url]) {
+  // strict equality is faster than truthy/falsy
+  if (userIndexes[req.url] === undefined) {
     userIndexes[req.url] = myStart;
   }
   const idx = (userIndexes[req.url] += 1);
