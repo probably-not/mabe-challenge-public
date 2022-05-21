@@ -59,11 +59,6 @@ const userIndexes = {};
 const router = async (req, res) => {
   res.statusCode = 200;
 
-  if (req.url === "/read") {
-    res.end(JSON.stringify({ ready: true }));
-    return;
-  }
-
   if (!userIndexes[req.url]) {
     userIndexes[req.url] = myStart;
   }
