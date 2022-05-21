@@ -29,12 +29,9 @@ if (!isMaster) {
 }
 
 // Define start and end for each side, to stop the tester without sending duplicates
-let myStart;
-let myHalf;
-if (isMaster) {
-  myStart = 0;
-  myHalf = 50;
-} else {
+let myStart = 0;
+let myHalf = 50;
+if (!isMaster) {
   myStart = 50;
   myHalf = 100;
 }
