@@ -65,27 +65,22 @@ const pathMatch = new RegExp(rpath);
 const router = async (req, res) => {
   res.statusCode = 200;
 
-  if (
-    req.url.startsWith(rpath) ||
-    req.url.includes(rpath) ||
-    pathMatch.test(req.url)
-  ) {
-    const userId = req.url.split("id=")[1];
-
-    if (!userIndexes[userId]) {
-      userIndexes[userId] = myStart;
-    }
-    const idx = (userIndexes[userId] += 1);
-
-    if (idx <= myHalf) {
-      res.end(allCards[idx - 1]);
-      return;
-    }
-    res.end(userSawAllCards);
+  if (req.url === "/read") {
+    res.end(JSON.stringify({ ready: true }));
     return;
   }
 
-  res.end(JSON.stringify({ ready: true }));
+  if (!userIndexes[req.url]) {
+    userIndexes[req.url] = myStart;
+  }
+  const idx = (userIndexes[req.url] += 1);
+
+  if (idx <= myHalf) {
+    res.end(allCards[idx - 1]);
+    return;
+  }
+  res.end(userSawAllCards);
+  return;
 };
 
 const http = require("turbo-http");
