@@ -29,6 +29,17 @@ if (!isMaster) {
   fs.unlinkSync(lockFile);
 }
 
+// Define start and end for each side, to stop the tester without sending duplicates
+let myStart;
+let myHalf;
+if (isMaster) {
+  myStart = 0;
+  myHalf = 50;
+} else {
+  myStart = 50;
+  myHalf = 100;
+}
+
 const shutdownHandler = (signal) => {
   console.log("starting shutdown, got signal " + signal);
   if (isMaster) {
@@ -62,11 +73,11 @@ const router = async (req, res) => {
     const userId = req.url.split("id=")[1];
 
     if (!userIndexes[userId]) {
-      userIndexes[userId] = 0;
+      userIndexes[userId] = myStart;
     }
     const idx = (userIndexes[userId] += 1);
 
-    if (idx <= allCardsLength) {
+    if (idx <= myHalf) {
       res.end(allCards[idx - 1]);
       return;
     }
@@ -77,22 +88,8 @@ const router = async (req, res) => {
   res.end(JSON.stringify({ ready: true }));
 };
 
-const net = require("net");
-const forwarder = net.createServer((from) => {
-  const to = net.createConnection({
-    host: "0.0.0.0",
-    port: masterPort,
-  });
-  from.pipe(to);
-  to.pipe(from);
-});
-
 const http = require("turbo-http");
 let server = http.createServer();
-
-if (!isMaster) {
-  server = forwarder;
-}
 
 server.on("request", router);
 server.listen(port, "0.0.0.0", () => {
