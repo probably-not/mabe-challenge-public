@@ -5,7 +5,6 @@ const cards = JSON.parse(cardsData);
 const allCards = cards.map((c) => {
   return Buffer.from(JSON.stringify(c));
 });
-const allCardsLength = allCards.length;
 const userSawAllCards = Buffer.from(JSON.stringify({ id: "ALL CARDS" }));
 
 const port = +process.argv[2] || 3000;
@@ -59,8 +58,6 @@ process.on("SIGINT", shutdownHandler);
 process.on("SIGTERM", shutdownHandler);
 
 const userIndexes = {};
-const rpath = "/card_add?";
-const pathMatch = new RegExp(rpath);
 
 const router = async (req, res) => {
   res.statusCode = 200;
