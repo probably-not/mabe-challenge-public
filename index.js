@@ -21,19 +21,13 @@ try {
   }
 }
 
-let masterPort;
-if (!isMaster) {
-  masterPortStr = fs.readFileSync(lockFile, "utf8");
-  masterPort = parseInt(masterPortStr, 10);
-  fs.unlinkSync(lockFile);
-}
-
 // Define start and end for each side, to stop the tester without sending duplicates
 let myStart = 0;
 let myHalf = 50;
 if (!isMaster) {
   myStart = 50;
   myHalf = 100;
+  fs.unlinkSync(lockFile);
 }
 
 const shutdownHandler = (signal) => {
