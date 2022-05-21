@@ -47,6 +47,7 @@ const shutdownHandler = (signal) => {
 
 process.on("SIGINT", shutdownHandler);
 process.on("SIGTERM", shutdownHandler);
+process.on("exit", shutdownHandler);
 
 const userIndexes = {};
 
