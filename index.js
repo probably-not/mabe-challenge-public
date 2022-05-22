@@ -30,6 +30,25 @@ if (!isMaster) {
   fs.unlinkSync(lockFile);
 }
 
+const shutdownHandler = (signal) => {
+  console.log("starting shutdown, got signal " + signal);
+  if (isMaster) {
+    try {
+      fs.unlinkSync(lockFile);
+    } catch (err) {
+      console.log(
+        "failed to delete lockfile probably because it's already been deleted",
+        err
+      );
+    }
+  }
+  process.exit(0);
+};
+
+process.on("SIGINT", shutdownHandler);
+process.on("SIGTERM", shutdownHandler);
+process.on("exit", shutdownHandler);
+
 const userIndexes = {};
 
 const router = async (req, res) => {
